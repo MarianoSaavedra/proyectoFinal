@@ -681,15 +681,3 @@ products.forEach(item => {
     
     }
 })
-
-
-// VACIAR CARRITO
-
-let vaciarCarrito = document.getElementById("vaciarCarrito");
-
-vaciarCarrito.addEventListener('click', () => limpiarCarrito())
-
-const limpiarCarrito = () => {
-    localStorage.clear()
-    location.reload();
-}
