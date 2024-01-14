@@ -580,6 +580,7 @@ const crearCuenta = (e) => {
     else{
         localStorage.setItem("usuario", input[0].value)
         localStorage.setItem("contraseña", input[1].value)
+        location.reload();
     }
 }
 
