@@ -557,10 +557,28 @@ let formularioUno = document.getElementById("formularioUno");
 let formularioDos = document.getElementById("formularioDos");
 let main = document.getElementById("main");
 
+
+// ACTUALIZA EL PRECIO DEL CARRITO
+
+const calcularCarrito = () => {
+    let total = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+        const clave = localStorage.key(i);
+        const carrito = JSON.parse(localStorage.getItem(clave));
+        
+        total += carrito;
+
+        console.log(total);
+    }
+    document.getElementById("carrito").innerHTML = total;
+}
+
 // REVISA SI EXISTE UN USUARIO CREADO. SI EXISTE LO SALUDA.
-if(localStorage.usuario){
-    let user = localStorage.getItem("usuario");
-    document.getElementById("headerDivUno").innerHTML = `<h2>Bienvenido ${user}</h2>`
+
+if(sessionStorage.usuario){
+    let user = sessionStorage.getItem("usuario");
+    document.getElementById("headerDivUno").innerHTML = `<h2>Bienvenido ${user}</h2>`;
+    calcularCarrito(); 
 }
 
 //FORMULARIO NUMERO 1, PARA CREAR UN USUARIO.
@@ -578,8 +596,8 @@ const crearCuenta = (e) => {
         error.innerHTML = `Recuerda que deben ser al menos 5 caracteres`
     }
     else{
-        localStorage.setItem("usuario", input[0].value)
-        localStorage.setItem("contraseña", input[1].value)
+        sessionStorage.setItem("usuario", input[0].value)
+        sessionStorage.setItem("contraseña", input[1].value)
         location.reload();
     }
 }
@@ -592,6 +610,7 @@ products.forEach((item) => {
             <h2>${item.title}</h2>
             <img src="${item.thumbnail}" alt="${item.description}" class="imagenes">
             <b>$${item.price}</b>
+            <input type="number" name="" id="cantidad${item.id}" min="1">
             <button id="${item.id}">Agregar</button>
             `
     main.append(div);
@@ -627,6 +646,7 @@ const ordenarProductos = () => {
                 <h2>${item.title}</h2>
                 <img src="${item.thumbnail}" alt="${item.description}" class="imagenes">
                 <b>$${item.price}</b>
+                <input type="number" name="" id="cantidad${item.id}" min="1">
                 <button id="${item.id}">Agregar</button>
             </div>`                
         });
@@ -648,7 +668,8 @@ const buscarProductos = (e) => {
             <h2>${item.title}</h2>
             <img src="${item.thumbnail}" alt="${item.description}" class="imagenes">
             <b>$${item.price}</b>
-            <button onclick id="${item.id}">Agregar</button>
+            <input type="number" name="" id="cantidad${item.id}" min="1">
+            <button id="${item.id}">Agregar</button>
         </div>`)
         
         document.getElementById("main").innerHTML = acumula;
@@ -656,28 +677,28 @@ const buscarProductos = (e) => {
 
 // ACTUALIZAR PRECIO DEL CARRITO UTILIZANDO EL STORAGE.
 
+const carrito = []
+
 products.forEach(item => {
     const boton = document.getElementById(`${item.id}`);
+    const cantidad = document.getElementById(`cantidad${item.id}`);
+
     boton.addEventListener('click', () => {
-        agregarAlLocalStorage(item.id, item.price);
+        const valor = cantidad.value * item.price;
+        localStorage.setItem(JSON.stringify(`${item.id}`), JSON.stringify(valor))
+        calcularCarrito();
     });
 
-    const agregarAlLocalStorage = (idProducto, precioProducto) => {
-
-    const productosSeleccionados = [];
-
-    productosSeleccionados.push({ precio: precioProducto });
-
-    localStorage.setItem(JSON.stringify(idProducto), JSON.stringify(productosSeleccionados));
-
-    let total = 0;
-    for (let i = 0; i < localStorage.length; i++) {
-        const clave = localStorage.key(i);
-        const carrito = JSON.parse(localStorage.getItem(clave));
-
-        total += carrito.reduce((suma, producto) => suma + producto.precio, 0);
-        document.getElementById("carrito").innerHTML = total;
-    }
-    
-    }
+    calcularCarrito();
 })
+
+// VACIAR CARRITO
+
+let vaciarCarrito = document.getElementById("vaciarCarrito");
+
+vaciarCarrito.addEventListener('click', () => reiniciarCarrito())
+
+const reiniciarCarrito = () => {
+    localStorage.clear();
+    location.reload();
+}
