@@ -1,8 +1,6 @@
-let contenedor = document.getElementById("contenedor");
 let header = document.getElementById("header");
 let main = document.getElementById("main");
 let aside = document.getElementById("aside");
-let formularioUno = document.getElementById("formularioUno"); // CREO QUE HAY QUE ELIMINARLO.
 let formularioDos = document.getElementById("formularioDos");
 let headerDivUno = document.getElementById("headerDivUno");
 let headerDivTres = document.getElementById("headerDivTres");
@@ -139,13 +137,13 @@ headerDivTres.addEventListener('click', (e) => vaciarCarrito(e))
 const vaciarCarrito = (e) => {
     if(e.target.id === "vaciarCarrito"){
         const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-              confirmButton: "btn btn-success",
-              cancelButton: "btn btn-danger"
-            },
-            buttonsStyling: false
-          });
-          swalWithBootstrapButtons.fire({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+        });
+        swalWithBootstrapButtons.fire({
             title: "¿Estas seguro de vaciar el carrito?",
             text: "No hay vuelta atras!",
             icon: "warning",
@@ -153,20 +151,20 @@ const vaciarCarrito = (e) => {
             confirmButtonText: "Si, borrar",
             cancelButtonText: "No, cancelar",
             reverseButtons: true
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.clear();
                 location.reload();     
             } else if (
-              result.dismiss === Swal.DismissReason.cancel
+                    result.dismiss === Swal.DismissReason.cancel
             ) {
-              swalWithBootstrapButtons.fire({
-                title: "Cancelado",
-                text: "Tu carrito sigue con tus cosas",
-                icon: "error"
-              });
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelado",
+                    text: "Tu carrito sigue con tus cosas",
+                    icon: "error"
+                });
             }
-          });
+        });
     }
     else{
         Swal.fire({
@@ -175,16 +173,11 @@ const vaciarCarrito = (e) => {
             title: "Tu compra se realizo con exito!!",
             showConfirmButton: false,
             timer: 1500
-          });
+        });
     } 
-
 }
 
-// VACIAR CARRITO
-
-// headerDivTres.addEventListener('click', (e) => utilizarCarrito(e){
-//     if(e.targe)
-// }
+// AGREGAR PRODUCTOS AL CARRITO
 
 const productosElegidos = JSON.parse(localStorage.getItem("Productos")) || [];
 
@@ -214,6 +207,7 @@ const agregarAlCarrito = (e) => {
     }
 }
 
+// MOSTRAR CARRITO
 
 const mostrarCarrito = () =>{
     const carritoTerminado = JSON.parse(localStorage.getItem("Productos"));
@@ -230,8 +224,7 @@ const mostrarCarrito = () =>{
                 <b>$${products.precio}</b>
                 `
         aside.append(div);
-        total += products.precio;
-            
+        total += products.precio;           
     });
     }
     document.getElementById("carrito").innerHTML = `$ ${total}`;
