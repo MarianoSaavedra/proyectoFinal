@@ -58,14 +58,19 @@
             text-align: center;
             font-size: 1.5rem;
         }
-        .vaciarCarrito{
+        .vaciarCarrito, .comprarCarrito{
             width: 25%;
+            height: 55px;
             padding: 5px;
+            margin: 5px;
             border-radius: 5px;
             font-size: 1rem;
         }
         .vaciarCarrito:hover{
             background-color: rgba(187, 83, 65, 0.813);
+        }
+        .comprarCarrito:hover{
+            background-color: rgba(68, 230, 60, 0.813);
         }
     }
     .main{

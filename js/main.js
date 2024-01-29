@@ -57,6 +57,7 @@ const userExist = () => {
                                 <img src="carrito.png" alt="Icono del carrito" class="imagenCarrito">
                                 <p class="precioCarrito" id="carrito">0</p>
                                 <button class="vaciarCarrito" id="vaciarCarrito">Vaciar Carrito</button>
+                                <button class="comprarCarrito" id="comprarCarrito">Comprar</button>
                             `
     mostrarCarrito();
 }
@@ -136,11 +137,54 @@ const buscarProductos = (e) => {
 headerDivTres.addEventListener('click', (e) => vaciarCarrito(e))
 
 const vaciarCarrito = (e) => {
-    if(e.target.tagName === "BUTTON"){
-        localStorage.clear();
-        location.reload();
+    if(e.target.id === "vaciarCarrito"){
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: "btn btn-success",
+              cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+          });
+          swalWithBootstrapButtons.fire({
+            title: "¿Estas seguro de vaciar el carrito?",
+            text: "No hay vuelta atras!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Si, borrar",
+            cancelButtonText: "No, cancelar",
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.clear();
+                location.reload();     
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire({
+                title: "Cancelado",
+                text: "Tu carrito sigue con tus cosas",
+                icon: "error"
+              });
+            }
+          });
+    }
+    else{
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Tu compra se realizo con exito!!",
+            showConfirmButton: false,
+            timer: 1500
+          });
     } 
+
 }
+
+// VACIAR CARRITO
+
+// headerDivTres.addEventListener('click', (e) => utilizarCarrito(e){
+//     if(e.targe)
+// }
 
 const productosElegidos = JSON.parse(localStorage.getItem("Productos")) || [];
 
